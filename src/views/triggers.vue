@@ -16,11 +16,18 @@
     <el-table-column prop="TRIGGER_NAME" label="TRIGGER_NAME" width="310" />
     <el-table-column prop="TRIGGER_GROUP" label="TRIGGER_GROUP" width="180" />
     <el-table-column prop="JOB_NAME" label="JOB_NAME" width="180" />
-    <el-table-column prop="JOB_GROUP" label="JOB_GROUP" />
-    <el-table-column prop="TRIGGER_STATE" label="TRIGGER_STATE" />
+    <el-table-column prop="JOB_GROUP" label="JOB_GROUP" width="180"/>
+    <el-table-column prop="DESCRIPTION" label="DESCRIPTION" width="180"/>
+    <el-table-column prop="prevFireTime" label="PREV_FIRE_TIME" width="180"/>
+    <el-table-column prop="nextFireTime" label="NEXT_FIRE_TIME" width="180"/>
+    <el-table-column prop="MISFIRE_INSTR" label="MISFIRE_INSTR" width="180"/>
+    <el-table-column prop="TRIGGER_STATE" label="TRIGGER_STATE" width="180"/>
+    <el-table-column prop="TRIGGER_TYPE" label="TRIGGER_TYPE" width="180"/>
+    <el-table-column prop="startTime" label="START_TIME" width="180"/>
+    <el-table-column prop="endTime" label="END_TIME" width="180"/>
     <el-table-column fixed="right" label="Operations" min-width="120">
       <template #default="scope">
-        <el-dropdown @command="(command) => { handleCommand(command, scope.row) }">
+        <el-dropdown @command="(command) => { handleCommand(command, scope.row) }" trigger="click">
             <el-button type="primary">
                 Action<el-icon ><arrow-down /></el-icon>
             </el-button>
