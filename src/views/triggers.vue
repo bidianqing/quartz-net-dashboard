@@ -51,7 +51,7 @@
   <el-pagination 
       v-model:current-page="filterTriggerOptions.pageIndex"
       v-model:page-size="filterTriggerOptions.pageSize"
-      :page-sizes="[1, 2, 50, 100]"
+      :page-sizes="[10, 20, 50, 100]"
       :background="true"
       layout="sizes, prev, pager, next"
       :total="total"
@@ -77,7 +77,7 @@ const total = ref(0)
 
 const filterTriggerOptions = reactive({
     pageIndex: 1,
-    pageSize: 1,
+    pageSize: 10,
     triggerName: null,
     jobName: null,
     jobGroup: null
