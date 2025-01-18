@@ -10,7 +10,7 @@
             <el-input v-model="filterTriggerOptions.jobGroup" clearable />
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="queryTrigger">Query</el-button>
+            <el-button type="primary" @click="btnQueryTrigger">Query</el-button>
         </el-form-item>
     </el-form>
 
@@ -48,6 +48,16 @@
       </template>
     </el-table-column>
   </el-table>
+  <el-pagination 
+      v-model:current-page="filterTriggerOptions.pageIndex"
+      v-model:page-size="filterTriggerOptions.pageSize"
+      :page-sizes="[1, 2, 50, 100]"
+      :background="true"
+      layout="sizes, prev, pager, next"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
 </template>
 
 <script setup>
@@ -63,7 +73,11 @@ onMounted(() => {
     queryTrigger()
 });
 
+const total = ref(0)
+
 const filterTriggerOptions = reactive({
+    pageIndex: 1,
+    pageSize: 1,
     triggerName: null,
     jobName: null,
     jobGroup: null
@@ -72,10 +86,25 @@ const filterTriggerOptions = reactive({
 const triggerData = ref([])
 const loading = ref(false)
 
+const handleSizeChange = (number) => {
+    filterTriggerOptions.pageIndex = 1
+    queryTrigger()
+}
+
+const handleCurrentChange = (number) => {
+    queryTrigger()
+}
+
+const btnQueryTrigger = () => {
+    filterTriggerOptions.pageIndex = 1
+    queryTrigger()
+}
+
 const queryTrigger = () => {
     loading.value = true
     getTriggers(filterTriggerOptions).then((res)=>{
-        triggerData.value = res.data
+        triggerData.value = res.data.list
+        total.value = res.data.total
         loading.value = false
     })
 }
