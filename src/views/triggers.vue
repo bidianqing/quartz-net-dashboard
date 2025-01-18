@@ -1,5 +1,8 @@
 <template>
     <el-form :inline="true" :model="filterTriggerOptions">
+        <el-form-item label="TriggerName">
+            <el-input v-model="filterTriggerOptions.triggerName" clearable />
+        </el-form-item>
         <el-form-item label="JobName">
             <el-input v-model="filterTriggerOptions.jobName" clearable />
         </el-form-item>
@@ -11,7 +14,7 @@
         </el-form-item>
     </el-form>
 
-  <el-table :data="triggerData" style="width: 100%">
+  <el-table :data="triggerData" style="width: 100%" v-loading="loading">
     <el-table-column prop="SCHED_NAME" label="SCHED_NAME" width="180" />
     <el-table-column prop="TRIGGER_NAME" label="TRIGGER_NAME" width="310" />
     <el-table-column prop="TRIGGER_GROUP" label="TRIGGER_GROUP" width="180" />
@@ -23,6 +26,9 @@
     <el-table-column prop="MISFIRE_INSTR" label="MISFIRE_INSTR" width="180"/>
     <el-table-column prop="TRIGGER_STATE" label="TRIGGER_STATE" width="180"/>
     <el-table-column prop="TRIGGER_TYPE" label="TRIGGER_TYPE" width="180"/>
+    <el-table-column prop="CALENDAR_INTERVAL" label="CALENDAR_INTERVAL" width="180"/>
+    <el-table-column prop="REPEAT_INTERVAL" label="REPEAT_INTERVAL" width="180"/>
+    <el-table-column prop="CRON_EXPRESSION" label="CRON_EXPRESSION" width="180"/>
     <el-table-column prop="startTime" label="START_TIME" width="180"/>
     <el-table-column prop="endTime" label="END_TIME" width="180"/>
     <el-table-column fixed="right" label="Operations" min-width="120">
@@ -58,15 +64,19 @@ onMounted(() => {
 });
 
 const filterTriggerOptions = reactive({
+    triggerName: null,
     jobName: null,
     jobGroup: null
 })
 
 const triggerData = ref([])
+const loading = ref(false)
 
 const queryTrigger = () => {
+    loading.value = true
     getTriggers(filterTriggerOptions).then((res)=>{
         triggerData.value = res.data
+        loading.value = false
     })
 }
 

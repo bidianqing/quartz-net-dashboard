@@ -11,7 +11,7 @@
         </el-form-item>
     </el-form>
 
-  <el-table :data="jobData" style="width: 100%">
+  <el-table :data="jobData" style="width: 100%" v-loading="loading">
     <el-table-column prop="scheD_NAME" label="SCHED_NAME" width="180" />
     <el-table-column prop="joB_NAME" label="JOB_NAME" width="180" />
     <el-table-column prop="joB_GROUP" label="JOB_GROUP" />
@@ -88,10 +88,13 @@ const filterJobOptions = reactive({
 })
 
 const jobData = ref([])
+const loading = ref(false)
 
 const queryJob = () => {
+    loading.value = true
     getJobs(filterJobOptions).then((res)=>{
         jobData.value = res.data
+        loading.value = false
     })
 }
 
