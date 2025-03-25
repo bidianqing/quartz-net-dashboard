@@ -39,6 +39,7 @@
             </el-button>
             <template #dropdown>
                 <el-dropdown-menu>
+                    <el-dropdown-item command="viewJobData">View JobData</el-dropdown-item>
                     <el-dropdown-item command="pause">Pause</el-dropdown-item>
                     <el-dropdown-item command="resume">Resume</el-dropdown-item>
                     <el-dropdown-item command="unschedule">Unschedule</el-dropdown-item>
@@ -58,6 +59,23 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <el-dialog
+        v-model="viewJobDataDialogOptions.visible"
+        title="JobData"
+        width="800"
+        >
+        <el-table :data="viewJobDataDialogOptions.jobData" style="width: 100%">
+            <el-table-column prop="key" label="KEY">
+            </el-table-column>
+            <el-table-column prop="value" label="VALUE" >
+            </el-table-column>
+        </el-table>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="viewJobDataDialogOptions.visible = false">Close</el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script setup>
@@ -74,6 +92,11 @@ onMounted(() => {
 });
 
 const total = ref(0)
+
+const viewJobDataDialogOptions = reactive( {
+    visible: false,
+    jobData: []
+})
 
 const filterTriggerOptions = reactive({
     pageIndex: 1,
@@ -110,6 +133,15 @@ const queryTrigger = () => {
 }
 
 const handleCommand = (command, row) => {
+    if (command == 'viewJobData'){
+        viewJobDataDialogOptions.jobData = []
+        for (const [key, value] of Object.entries(row.jobData)) {
+            viewJobDataDialogOptions.jobData.push({"key":key,"value":value})
+        }
+        viewJobDataDialogOptions.visible = true
+        
+        return
+    }
     TriggerAction({
         triggerName: row.TRIGGER_NAME,
         triggerGroup: row.TRIGGER_GROUP,
