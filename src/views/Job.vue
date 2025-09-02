@@ -70,77 +70,77 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive } from 'vue'
 import {
   Check,
   Delete,
   Edit,
   Message,
   Search,
-  Star,
-} from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
+  Star
+} from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
-import { getJobs, TriggerJob } from "@/api";
+import { getJobs, TriggerJob } from '@/api'
 onMounted(() => {
-  queryJob();
-});
+  queryJob()
+})
 
-const filterJobOptions = reactive({});
+const filterJobOptions = reactive({})
 
-const jobData = ref([]);
-const loading = ref(false);
+const jobData = ref([])
+const loading = ref(false)
 
 const queryJob = () => {
-  loading.value = true;
-  getJobs(filterJobOptions).then((res) => {
-    jobData.value = res.data;
-    loading.value = false;
-  });
-};
+  loading.value = true
+  getJobs(filterJobOptions).then(res => {
+    jobData.value = res.data
+    loading.value = false
+  })
+}
 
 const triggerJobDialogOptions = reactive({
   visible: false,
-  title: "",
+  title: '',
   row: null,
-  form: {},
-});
+  form: {}
+})
 
-const visibleTriggerJobDialog = (row) => {
-  triggerJobDialogOptions.visible = true;
-  triggerJobDialogOptions.title = `Trigger[${row.JOB_GROUP}.${row.JOB_NAME}]`;
-  triggerJobDialogOptions.row = row;
+const visibleTriggerJobDialog = row => {
+  triggerJobDialogOptions.visible = true
+  triggerJobDialogOptions.title = `Trigger[${row.JOB_GROUP}.${row.JOB_NAME}]`
+  triggerJobDialogOptions.row = row
   triggerJobDialogOptions.form = {
     JOB_NAME: row.JOB_NAME,
     JOB_GROUP: row.JOB_GROUP,
-    variables: [],
-  };
-};
+    variables: []
+  }
+}
 
 const triggerJob = () => {
-  TriggerJob(triggerJobDialogOptions.form).then((res) => {
-    triggerJobDialogOptions.visible = false;
+  TriggerJob(triggerJobDialogOptions.form).then(res => {
+    triggerJobDialogOptions.visible = false
     ElMessage({
-      message: "执行成功",
-      type: "success",
-    });
-  });
-};
+      message: '执行成功',
+      type: 'success'
+    })
+  })
+}
 
 const addJobData = () => {
   triggerJobDialogOptions.form.variables.push({
     variableId: Date.now(),
-    variableName: "",
-    variableName: "",
-  });
-};
+    variableName: '',
+    variableName: ''
+  })
+}
 
-const removeVariable = (item) => {
-  const index = triggerJobDialogOptions.form.variables.indexOf(item);
+const removeVariable = item => {
+  const index = triggerJobDialogOptions.form.variables.indexOf(item)
   if (index !== -1) {
-    triggerJobDialogOptions.form.variables.splice(index, 1);
+    triggerJobDialogOptions.form.variables.splice(index, 1)
   }
-};
+}
 
 const reset = () => {
   filterJobOptions.JOB_NAME = null
