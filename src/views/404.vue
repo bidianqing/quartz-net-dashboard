@@ -1,5 +1,3 @@
 <template>
-    <div>
-        404页面
-    </div>
+  <div>404页面</div>
 </template>
