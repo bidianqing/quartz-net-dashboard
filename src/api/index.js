@@ -8,6 +8,14 @@ export async function login(data) {
   })
 }
 
+export async function scheduleJob(data) {
+  return await httpClient({
+    method: 'post',
+    url: '/quartz/scheduleJob',
+    data
+  })
+}
+
 export async function getJobs(data) {
   return await httpClient({
     method: 'get',
